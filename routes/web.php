@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ClientController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,5 +23,6 @@ Route::get('/', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('client', ClientController::class);
+Route::resource('billing', BillingController::class);
 
 Auth::routes();

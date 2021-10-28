@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Billing;
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 class BillingController extends Controller
@@ -13,7 +15,8 @@ class BillingController extends Controller
      */
     public function index()
     {
-        //
+        $bills = Billing::paginate(10);
+        return view("billing.index", compact('bills'));
     }
 
     /**
@@ -23,7 +26,8 @@ class BillingController extends Controller
      */
     public function create()
     {
-        //
+        $clients = Client::all();
+        return view("billing.create", compact('clients'));
     }
 
     /**
@@ -34,7 +38,9 @@ class BillingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(['amount' => 'required']);
+        Billing::create($request->all());
+        return redirect()->route('billing.index');
     }
 
     /**
@@ -54,9 +60,10 @@ class BillingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Billing $billing)
     {
-        //
+        $clients = Client::all();
+        return view("billing.edit", compact('billing', 'clients'));
     }
 
     /**
@@ -66,9 +73,11 @@ class BillingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Billing $billing)
     {
-        //
+        $request->validate(['amount' => 'required']);
+        $billing->update($request->all());
+        return back()->with('success','Billing successfully added.');
     }
 
     /**
@@ -77,8 +86,9 @@ class BillingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Billing $billing)
     {
-        //
+        $billing->delete();
+        return redirect()->route('billing.index');
     }
 }

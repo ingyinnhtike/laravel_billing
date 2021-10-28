@@ -18,7 +18,7 @@ class CreateBillingsTable extends Migration
             $table->string('amount');
             $table->date('due_date');
             $table->unsignedBigInteger('client_id');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
